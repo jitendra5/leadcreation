@@ -36,12 +36,15 @@ res.send('Hello World!');
 
 //post end point
 app.post('/api1.0/cloudbyz/createlead',urlencodedParser, function (req, res) {
-    logger.debug(req.body.data);
+    logger.debug('data---');
+    logger.debug(req.body);
+    logger.debug('conn');
+    logger.debug(conn);
     let insertOPS = function insertLead(conn){
         logger.debug('Inserting Lead now.!!!');
         return new Promise(function(resolve, reject) {
             // Single record creation
-            conn.sobject("Lead").create(req.body.data, function(err, ret) {
+            conn.sobject("Account").create(req.body, function(err, ret) {
             if (err || !ret.success) 
             { 
                 return console.error(err, ret); 
@@ -84,13 +87,15 @@ app.post('/api1.0/cloudbyz/createlead',urlencodedParser, function (req, res) {
     }
     function main() {
         var con;
-        var db =dynamodb;
+        //var db =dynamodb;
         let connectSFDC = sfdcConnFn();
         var totalTables=[];
         connectSFDC.then((result)=>{
             logger.debug("#####connected to SFDC "+result.status);
+            logger.debug('resul--------t');
+            logger.debug(result);
             //logger.debug(result);
-            return insertOPS(result.conn);
+            return insertOPS(result.con);
         })
         .then((result)=>{
             //logger.debug(result);
