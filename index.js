@@ -30,7 +30,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(bodyParser.json({ type: 'application/json' }));
 
 //test get end point
-app.get('/', function (req, res) {
+app.get('/test', function (req, res) {
 res.send('Hello World!');
 });
 
