@@ -24,13 +24,13 @@ format: "at @name (@file:@line:@column)"
 
 var logger = log4js.getLogger('debug');
 let conn;
-app.set( 'port', process.env.PORT || 5000 );
+app.set( 'port', process.env.PORT || 3000 );
 var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(bodyParser.json({ type: 'application/json' }));
 
 //test get end point
-app.get('/test', function (req, res) {
+app.get('/', function (req, res) {
     logger.debug('data--- test end point');
     logger.debug(req.baseUrl);
 res.send('Hello World!');
