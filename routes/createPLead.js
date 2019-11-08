@@ -16,7 +16,7 @@ router.post('/', function(req, res, next) {
             data['LastName'] =data['LastName'];
           }
           else{
-            data['LastName'] ='.';
+            data['LastName'] ='Volunteer Lead';
           }
           conn.sobject("Lead").create(data, function(err, ret) {
           if (err || !ret.success) 
