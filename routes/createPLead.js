@@ -18,8 +18,7 @@ router.post('/', function(req, res, next) {
           else{
             data['LastName'] ='.';
           }
-          data['LastName'] = 'Cloudbyz';
-          conn.sobject("Lead").create(req.body, function(err, ret) {
+          conn.sobject("Lead").create(data, function(err, ret) {
           if (err || !ret.success) 
           { 
               //return console.error(err, ret); 
