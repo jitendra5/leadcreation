@@ -1,20 +1,17 @@
 {
-  "name": "wcct",
-  "version": "1.0.0",
-  "description": "Lead creation form",
-  "main": "index.js",
+  "name": "myexpressapp",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node ./bin/www"
   },
-  "keywords": [
-    "wordpress"
-  ],
-  "author": "Jitendra Josyula",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "jsforce": "^1.9.3",
-    "log4js-extend": "^0.2.1"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "hbs": "~4.0.4",
+    "http-errors": "~1.6.3",
+    "jsforce": "^1.9.2",
+    "morgan": "~1.9.1"
   }
 }
