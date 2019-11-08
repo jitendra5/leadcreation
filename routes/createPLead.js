@@ -10,7 +10,16 @@ router.post('/', function(req, res, next) {
       console.log('Inserting Lead now.!!!');
       return new Promise(function(resolve, reject) {
           // Single record creation
-          conn.sobject("Account").create(req.body, function(err, ret) {
+          let data =req.body;
+          data['RecordTypeId'] ='012540000018F47AAE';
+          if(Object.keys(data).includes('LastName')){
+            data['LastName'] =data['LastName'];
+          }
+          else{
+            data['LastName'] ='.';
+          }
+          data['LastName'] = 'Cloudbyz';
+          conn.sobject("Lead").create(req.body, function(err, ret) {
           if (err || !ret.success) 
           { 
               //return console.error(err, ret); 
