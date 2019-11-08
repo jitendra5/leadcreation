@@ -31,6 +31,8 @@ app.use(bodyParser.json({ type: 'application/json' }));
 
 //test get end point
 app.get('/test', function (req, res) {
+    logger.debug('data--- test end point');
+    logger.debug(req.baseUrl);
 res.send('Hello World!');
 });
 
