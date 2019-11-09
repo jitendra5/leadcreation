@@ -24,7 +24,8 @@ router.post('/', function(req, res, next) {
           if (err || !ret.success) 
           { 
               //return console.error(err, ret); 
-              resolve('Error in creating Lead..');
+              //resolve(err.name +' : '+err.fields);
+              reject(err.name +' : '+err.fields);
           }
           else{
               console.log("Created record id : " + ret.id);
@@ -83,7 +84,8 @@ router.post('/', function(req, res, next) {
       })
       .catch((error)=>{
           console.log(error);
-          res.status(404).end();
+          res.send(JSON.stringify({'Status': error,'Response':'400'}));
+          //res.status(404).end();
       });
   };
   //starting the Event loop execution.
