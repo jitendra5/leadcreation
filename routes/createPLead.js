@@ -20,6 +20,12 @@ router.post('/', function(req, res, next) {
           else{
             data['LastName'] ='Volunteer Lead';
           }
+          if(Object.keys(data).includes('Company')){
+            data['Company'] =data['Company'];
+          }
+          else{
+            data['Company'] ='WCCT';
+          }
           conn.sobject("Lead").create(data, function(err, ret) {
           if (err || !ret.success) 
           { 
