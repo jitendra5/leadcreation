@@ -3,6 +3,8 @@ var router = express.Router();
 var jsforce = require('jsforce');
 
 router.post('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
   console.log('data---');
   console.log(req.body);
   console.log('conn');
