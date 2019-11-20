@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
           }
           else{
               console.log("Created record id : " + ret.id);
-              resolve("Lead Created Successfully. Id: "+ret.id);
+              resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
           }
           });
       })
