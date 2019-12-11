@@ -9,11 +9,11 @@ router.post('/', function(req, res, next) {
   console.log(req.body);
   console.log('conn');
   let insertOPS = function insertLead(conn){
-      console.log('Inserting Volunteer Lead now.!!!');
+      console.log('Inserting Lead now.!!!');
       return new Promise(function(resolve, reject) {
           // Single record creation
           let data =req.body;
-          /*data['RecordTypeId'] ='012540000018F47AAE';
+          data['RecordTypeId'] ='012540000018F47AAE';
           if(Object.keys(data).includes('LastName')){
             data['LastName'] =data['LastName'];
           }
@@ -25,8 +25,8 @@ router.post('/', function(req, res, next) {
           }
           else{
             data['Company'] ='Volunteer Lead';
-          }*/
-          conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
+          }
+          conn.sobject("Lead").create(data, function(err, ret) {
           if (err || !ret.success) 
           { 
               //return console.error(err, ret); 
