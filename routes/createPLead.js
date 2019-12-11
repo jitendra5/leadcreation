@@ -9,11 +9,11 @@ router.post('/', function(req, res, next) {
   console.log(req.body);
   console.log('conn');
   let insertOPS = function insertLead(conn){
-      console.log('Inserting Lead now.!!!');
+      console.log('Inserting Volunteer Lead now.!!!');
       return new Promise(function(resolve, reject) {
           // Single record creation
           let data =req.body;
-          data['RecordTypeId'] ='012540000018F47AAE';
+          /*data['RecordTypeId'] ='012540000018F47AAE';
           if(Object.keys(data).includes('LastName')){
             data['LastName'] =data['LastName'];
           }
@@ -25,8 +25,8 @@ router.post('/', function(req, res, next) {
           }
           else{
             data['Company'] ='Volunteer Lead';
-          }
-          conn.sobject("Lead").create(data, function(err, ret) {
+          }*/
+          conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
           if (err || !ret.success) 
           { 
               //return console.error(err, ret); 
@@ -42,6 +42,9 @@ router.post('/', function(req, res, next) {
   }
   let sfdcConnFn =function callJSForce(tables){
       console.log('Calling JSFORCE now.!!!');
+      console.log("process.env.url: "+process.env.url);
+      console.log("process.env.username: "+process.env.username);
+      console.log("process.env.password: "+process.env.password);
       return new Promise(function(resolve, reject) {
           var conn = new jsforce.Connection({
               // you can change loginUrl to connect to sandbox or prerelease env.
