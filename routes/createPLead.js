@@ -36,19 +36,8 @@ let insertOPS = function insertLead(conn){
         }
         else{
             console.log("Created record id : " + ret.id);
-            //console.log('language: '+language);
-        if(language == 'Chinese')
-        {
-            resolve("非常感谢您对我们的临床试验有兴趣。我们的工作人员很快就会与您联系。");
-        }
-        else if(language == 'Japanese')
-        {
-            resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
-        }
-        else
-        {
-        resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
-        }
+            console.log('language: '+language);
+            resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
         }
         });
     })
