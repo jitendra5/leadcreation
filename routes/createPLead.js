@@ -63,7 +63,7 @@ let sfdcConnFn =function callJSForce(tables){
             // you can change loginUrl to connect to sandbox or prerelease env.
             loginUrl : 'https://test.salesforce.com'
             });
-            conn.login('hariharan@cloudbyz.com.wcct.ctmsdev', 'wcct@2019ZCWqz8UMHZ47EDkisVpMQW2bu', function(err, userInfo) {
+            conn.login('support@cloudbyz.com', 'Winter@2019y5lgyTRSfwKDo6BT4knqmWBAI', function(err, userInfo) {
             if (err) { 
                 var resp={
                     con :'error',
