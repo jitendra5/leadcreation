@@ -61,9 +61,9 @@ let sfdcConnFn =function callJSForce(){
     return new Promise(function(resolve, reject) {
         var conn = new jsforce.Connection({
             // you can change loginUrl to connect to sandbox or prerelease env.
-            loginUrl : process.env.url
+            loginUrl : 'https://test.salesforce.com'
             });
-            conn.login(process.env.username, process.env.password, function(err, userInfo) {
+            conn.login('hariharan@cloudbyz.com.wcct.ctmsdev', 'wcct@2019VUIr6LAitW37BCYjKIdYm1vV', function(err, userInfo) {
             if (err) { 
                 var resp={
                     con :'error',
