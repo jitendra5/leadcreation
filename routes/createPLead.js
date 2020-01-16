@@ -45,6 +45,10 @@ let insertOPS = function insertLead(conn){
                 {
                     resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
                 }
+            else if(language == 'Spanish')
+                {
+                    resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
+                }
             else
                 {
                 resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
