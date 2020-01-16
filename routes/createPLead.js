@@ -61,9 +61,9 @@ let sfdcConnFn =function callJSForce(tables){
     return new Promise(function(resolve, reject) {
         var conn = new jsforce.Connection({
             // you can change loginUrl to connect to sandbox or prerelease env.
-            loginUrl : 'https://test.salesforce.com'
+            loginUrl : process.env.url
             });
-            conn.login('support@cloudbyz.com', 'Winter@2019y5lgyTRSfwKDo6BT4knqmWBAI', function(err, userInfo) {
+            conn.login(process.env.username, process.env.password, function(err, userInfo) {
             if (err) { 
                 var resp={
                     con :'error',
