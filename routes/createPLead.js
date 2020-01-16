@@ -53,7 +53,7 @@ let insertOPS = function insertLead(conn){
         });
     })
 }
-let sfdcConnFn =function callJSForce(tables){
+let sfdcConnFn =function callJSForce(){
     console.log('Calling JSFORCE now.!!!');
     console.log("process.env.url: "+process.env.url);
     console.log("process.env.username: "+process.env.username);
