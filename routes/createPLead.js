@@ -30,8 +30,10 @@ router.post('/', function(req, res, next) {
             conn.sobject("Volunteer_Lead__c").query("SELECT count() FROM Volunteer_Lead__c where Email__c = '" + Email__c + "'", function(err, result) {
                 if (err)
                     reject(err);
-                if (result > 0)
+                if (result == 0)
                     createVLRecord(resolve, reject);
+                else
+                    reject("You have already registered for this study");
             });
         })
     }
