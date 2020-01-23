@@ -36,6 +36,13 @@ router.post('/', function(req, res, next) {
                   else 
                    volunteerLeadRecordCreator(conn,data,reject, resolve); 
                 });
+            else if(clinicalstudy)
+                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='"+clinicalstudy+"'", function(err, result){
+                  if(result.totalSize>=1)
+                   reject('You have already subscribed');
+                  else 
+                   volunteerLeadRecordCreator(conn,data,reject, resolve); 
+                });
             else
                 volunteerLeadRecordCreator(conn,data, reject, resolve);
         })
