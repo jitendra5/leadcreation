@@ -29,15 +29,8 @@ router.post('/', function(req, res, next) {
             language = data['Language__c'];
             email = data['Email__c'];
             clinicalstudy = data['Clinical_Study__c'];
-            if(email)
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Email__c ='"+email+"'", function(err, result){
-                  if(result.totalSize>=1)
-                   reject('You have already subscribed');
-                  else 
-                   volunteerLeadRecordCreator(conn,data,reject, resolve); 
-                });
-            else if(clinicalstudy)
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='"+clinicalstudy+"'", function(err, result){
+            if(email && clinicalstudy)
+                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='"+clinicalstudy+"' AND Email__c ='"+email+"'", function(err, result){
                   if(result.totalSize>=1)
                    reject('You have already subscribed');
                   else 
