@@ -33,14 +33,14 @@ router.post('/', function(req, res, next) {
                   if(result.totalSize>=1)
                    reject('You have already subscribed');
                   else 
-                   volunteerLeadRecordCreator(conn,reject, resolve); 
+                   volunteerLeadRecordCreator(conn,data,reject, resolve); 
                 });
             else
-                volunteerLeadRecordCreator(conn,reject, resolve);
+                volunteerLeadRecordCreator(conn,data, reject, resolve);
         })
     }
 
-    function volunteerLeadRecordCreator(conn, reject, resolve){
+    function volunteerLeadRecordCreator(conn, data, reject, resolve){
       conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
         if (err || !ret.success) {
             //return console.error(err, ret); 
