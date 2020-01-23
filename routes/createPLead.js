@@ -43,9 +43,7 @@ router.post('/', function(req, res, next) {
                     } else if (language == 'Spanish') {
                         resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
                     } else {
-                        conn.sobject("Volunteer_Lead__c").query("SELECT count() FROM Volunteer_Lead__c where Email__c ='"+email+"'", function(err, ret) {
-                            resolve(ret);
-                        }    
+                      resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly."+email);
                     }
                 }
             });
