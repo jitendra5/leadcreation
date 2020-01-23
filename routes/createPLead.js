@@ -28,32 +28,40 @@ router.post('/', function(req, res, next) {
             }*/
             language = data['Language__c'];
             email = data['Email__c'];
-            conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
-                if (err || !ret.success) {
-                    //return console.error(err, ret); 
-                    //resolve(err.name +' : '+err.fields);
-                    reject(err.name + ' : ' + err.fields);
-                } else {
-                    console.log("Created record id : " + ret.id);
-                    console.log('language: ' + language);
-                    if (language == 'Chinese') {
-                        resolve("非常感谢您对我们的临床试验有兴趣。我们的工作人员很快就会与您联系。");
-                    } else if (language == 'Japanese') {
-                        resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
-                    } else if (language == 'Spanish') {
-                        resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
-                    } else {
-                        conn.query("SELECT Email__c FROM Volunteer_Lead__c where Email__c ='aviv11@gmail.com'", function(err, result){
-                            resolve('This is from the query object'+result.totalSize);
-                        });
-                        //resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly."+email);
-                    }
-                }
-            });
+            if(email)
+                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Email__c ='"+email+"'", function(err, result){
+                  if(result.totalSize>=1)
+                   reject('You have already subscribed');
+                  else 
+                   volunteerLeadRecordCreator(conn,reject, resolve); 
+                });
+            else
+                volunteerLeadRecordCreator(conn,reject, resolve);
         })
     }
 
-
+    function volunteerLeadRecordCreator(conn, reject, resolve){
+      conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
+        if (err || !ret.success) {
+            //return console.error(err, ret); 
+            //resolve(err.name +' : '+err.fields);
+            reject(err.name + ' : ' + err.fields);
+        } else {
+            console.log("Created record id : " + ret.id);
+            console.log('language: ' + language);
+            if (language == 'Chinese') {
+                resolve("非常感谢您对我们的临床试验有兴趣。我们的工作人员很快就会与您联系。");
+            } else if (language == 'Japanese') {
+                resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
+            } else if (language == 'Spanish') {
+                resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
+            } else {
+                resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly."+email);
+            }
+        }
+       });
+    }
+    
     let sfdcConnFn = function callJSForce() {
         console.log('Calling JSFORCE now.!!!');
         console.log("process.env.url: " + process.env.url);
