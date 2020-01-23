@@ -29,7 +29,7 @@ router.post('/', function(req, res, next) {
             language = data['Language__c'];
             conn.sobject("Volunteer_Lead__c").query("SELECT count() FROM Volunteer_Lead__c where Email__c = '" + Email__c + "'", function(err, result) {
                 if (err)
-                    reject(err);
+                    reject(err.message);
                 if (result == 0)
                     createVLRecord(resolve, reject);
                 else
