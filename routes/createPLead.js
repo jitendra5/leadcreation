@@ -27,37 +27,26 @@ router.post('/', function(req, res, next) {
             data['Company'] ='Volunteer Lead';
             }*/
             language = data['Language__c'];
-            conn.sobject("Volunteer_Lead__c").query("SELECT count() FROM Volunteer_Lead__c where Email__c = '" + Email__c + "'", function(err, result) {
-                if (err)
-                    reject('This is from error object');
-                if (result == 0)
-                    createVLRecord(resolve, reject);
-                else
-                    reject("You have already registered for this study");
+            conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
+                if (err || !ret.success) {
+                    //return console.error(err, ret); 
+                    //resolve(err.name +' : '+err.fields);
+                    reject(err.name + ' : ' + err.fields);
+                } else {
+                    console.log("Created record id : " + ret.id);
+                    console.log('language: ' + language);
+                    if (language == 'Chinese') {
+                        resolve("非常感谢您对我们的临床试验有兴趣。我们的工作人员很快就会与您联系。");
+                    } else if (language == 'Japanese') {
+                        resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
+                    } else if (language == 'Spanish') {
+                        resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
+                    } else {
+                        resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
+                    }
+                }
             });
         })
-    }
-
-    function createVLRecord(resolve, reject) {
-        conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
-            if (err || !ret.success) {
-                //return console.error(err, ret); 
-                //resolve(err.name +' : '+err.fields);
-                reject(err.name + ' : ' + err.fields);
-            } else {
-                console.log("Created record id : " + ret.id);
-                console.log('language: ' + language);
-                if (language == 'Chinese') {
-                    resolve("非常感谢您对我们的临床试验有兴趣。我们的工作人员很快就会与您联系。");
-                } else if (language == 'Japanese') {
-                    resolve("ご登録ありがとうございました。後ほど担当者からご連絡いたします。");
-                } else if (language == 'Spanish') {
-                    resolve("Gracias por su interés en el voluntariado. Uno de los miembros de nuestro personal se comunicará con usted en breve.");
-                } else {
-                    resolve("Thank you for your interest in volunteering. One of our staff members will be reaching out to you shortly.");
-                }
-            }
-        });
     }
 
 
