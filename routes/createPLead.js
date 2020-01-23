@@ -28,8 +28,9 @@ router.post('/', function(req, res, next) {
             }*/
             language = data['Language__c'];
             email = data['Email__c'];
-            if(email)
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Email__c ='"+email+"'", function(err, result){
+            clinicalStudy = data['Clinical_Study__c'];
+            if(email && clinicalStudy)
+                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Email__c ='"+email+"' and Clinical_Study__c='"+clinicalStudy+"'", function(err, result){
                   if(result.totalSize>=1)
                    reject('You have already subscribed');
                   else 
