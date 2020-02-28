@@ -31,12 +31,15 @@ router.post('/', function(req, res, next) {
             clinicalstudy = data['Clinical_Study__c'];
             phone = data['Phone__c'];
             if (email && phone && clinicalstudy) {
+                console.log('YOOOOOO in 1st if, all are not null');
                 // check for email and clinical study duplication
                 if (email && clinicalstudy) {
+                    console.log('YOOOOOO in 2nd if, email and study');
                     conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
                         if (result.totalSize <= 0) {
+                            console.log('YOOOOOO in 2nd if, no dupe of email and study');
                             // check for phone number and clinical study duplication
-                            conn.query("SELECT Phone__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Phone__c ='" + phone + "'", function(err, result) {
+                            conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Phone__c ='" + phone + "'", function(err, result) {
                                 if (result.totalSize >= 1)
                                     reject('You have already subscribed');
                                 else
@@ -47,6 +50,7 @@ router.post('/', function(req, res, next) {
                     });
                 }
                 if (email && phone && !clinicalstudy) {
+                    console.log('YOOOOOO in if, email and phone but study null');
                     // check for phone and clinical study duplication
                     conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
                         if (result.totalSize >= 1)
