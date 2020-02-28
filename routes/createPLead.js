@@ -42,7 +42,7 @@ router.post('/', function(req, res, next) {
                 if (email && phone) {
                     if (!clinicalstudy) {
                         //clinicalstudy = '';
-                        conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND Email__c ='" + email + "'", function(err, result) {
+                        conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND Email__c ='" + email + "' AND Phone__c = '" + phone + "'", function(err, result) {
                             if (result.totalSize >= 1)
                                 reject('You have already subscribed');
                             else
