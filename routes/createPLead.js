@@ -30,27 +30,32 @@ router.post('/', function(req, res, next) {
             email = data['Email__c'];
             clinicalstudy = data['Clinical_Study__c'];
             phone = data['Phone__c'];
-            if (email || clinicalstudy || phone) {
+            if (email && phone && clinicalstudy) {
+                // check for email and clinical study duplication
                 if (email && clinicalstudy) {
                     conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
+                        if (result.totalSize <= 0) {
+                            // check for phone number and clinical study duplication
+                            conn.query("SELECT Phone__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Phone__c ='" + phone + "'", function(err, result) {
+                                if (result.totalSize >= 1)
+                                    reject('You have already subscribed');
+                                else
+                                    volunteerLeadRecordCreator(conn, data, reject, resolve);
+                            });
+                        } else
+                            reject('You have already subscribed');
+                    });
+                }
+                if (email && phone && !clinicalstudy) {
+                    // check for phone and clinical study duplication
+                    conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
                         if (result.totalSize >= 1)
                             reject('You have already subscribed');
                         else
                             volunteerLeadRecordCreator(conn, data, reject, resolve);
                     });
                 }
-                if (email && phone) {
-                    if (!clinicalstudy) {
-                        //clinicalstudy = '';
-                        conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND Email__c ='" + email + "' AND Phone__c = '" + phone + "'", function(err, result) {
-                            if (result.totalSize >= 1)
-                                reject('You have already subscribed');
-                            else
-                                volunteerLeadRecordCreator(conn, data, reject, resolve);
-                        });
-                    }
 
-                }
             } else
                 volunteerLeadRecordCreator(conn, data, reject, resolve);
         })
