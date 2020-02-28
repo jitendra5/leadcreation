@@ -30,17 +30,8 @@ router.post('/', function(req, res, next) {
             email = data['Email__c'];
             clinicalstudy = data['Clinical_Study__c'];
             phone = data['Phone__c'];
-            if (email && clinicalstudy) {
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
-                    if (result.totalSize >= 1)
-                        reject('You have already subscribed');
-                    else
-                        volunteerLeadRecordCreator(conn, data, reject, resolve);
-                });
-            }
-            if (email && phone) {
-                if (!clinicalstudy) {
-                    clinicalstudy = '';
+            if (email || clinicalstudy || phone) {
+                if (email && clinicalstudy) {
                     conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
                         if (result.totalSize >= 1)
                             reject('You have already subscribed');
@@ -48,7 +39,18 @@ router.post('/', function(req, res, next) {
                             volunteerLeadRecordCreator(conn, data, reject, resolve);
                     });
                 }
+                if (email && phone) {
+                    if (!clinicalstudy) {
+                        //clinicalstudy = '';
+                        conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND Email__c ='" + email + "'", function(err, result) {
+                            if (result.totalSize >= 1)
+                                reject('You have already subscribed');
+                            else
+                                volunteerLeadRecordCreator(conn, data, reject, resolve);
+                        });
+                    }
 
+                }
             } else
                 volunteerLeadRecordCreator(conn, data, reject, resolve);
         })
