@@ -49,18 +49,18 @@ router.post('/', function(req, res, next) {
                             reject('You have already subscribed');
                     });
                 }
-                if (email && phone && !clinicalstudy) {
-                    console.log('YOOOOOO in if, email and phone but study null');
-                    // check for phone and clinical study duplication
-                    conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
-                        if (result.totalSize >= 1)
-                            reject('You have already subscribed');
-                        else
-                            volunteerLeadRecordCreator(conn, data, reject, resolve);
-                    });
-                }
 
-            } else
+            } 
+            if (email && phone && !clinicalstudy) {
+                console.log('YOOOOOO in if, email and phone but study null');
+                // check for phone and clinical study duplication
+                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
+                    if (result.totalSize >= 1)
+                        reject('You have already subscribed');
+                    else
+                        volunteerLeadRecordCreator(conn, data, reject, resolve);
+                });
+            }else
                 volunteerLeadRecordCreator(conn, data, reject, resolve);
         })
     }
