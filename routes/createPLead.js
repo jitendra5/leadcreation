@@ -60,16 +60,16 @@ router.post('/', function(req, res, next) {
                     else
                         volunteerLeadRecordCreator(conn, data, reject, resolve);
                 });
-            } 
-            if (email && !phone && clinicalstudy){
+            }
+            if (email && !phone && clinicalstudy) {
+                console.log('YOOOOOO in 3rd if, phone is null');
                 conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
                     else
                         volunteerLeadRecordCreator(conn, data, reject, resolve);
                 });
-            }
-            else
+            } else
                 volunteerLeadRecordCreator(conn, data, reject, resolve);
         })
     }
