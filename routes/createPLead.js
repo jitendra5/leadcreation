@@ -13,27 +13,12 @@ router.post('/', function(req, res, next) {
         return new Promise(function(resolve, reject) {
             // Single record creation
             let data = req.body;
-            /*data['RecordTypeId'] ='012540000018F47AAE';
-            if(Object.keys(data).includes('LastName')){
-            data['LastName'] =data['LastName'];
-            }
-            else{
-            data['LastName'] ='Volunteer Lead';
-            }
-            if(Object.keys(data).includes('Company')){
-            data['Company'] =data['Company'];
-            }
-            else{
-            data['Company'] ='Volunteer Lead';
-            }*/
             language = data['Language__c'];
             email = data['Email__c'];
             clinicalstudy = data['Clinical_Study__c'];
             phone = data['Phone__c'];
+            //Check for email, phone, and clinical study volunteer lead records, If already exists throw error message
             if (email && phone && clinicalstudy) {
-                console.log('YOOOOOO in 1st if, all are not null');
-                // check for email and clinical study duplication
-                console.log('YOOOOOO in 2nd if, email and study');
                 conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
@@ -42,8 +27,7 @@ router.post('/', function(req, res, next) {
                 });
 
             } else if (email && phone) {
-                console.log('YOOOOOO in if, email and phone but study null');
-                // check for phone and clinical study duplication
+                //Check for email and phone volunteer lead records with clinical study as null, If already exists throw error message
                 conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
@@ -51,7 +35,6 @@ router.post('/', function(req, res, next) {
                         volunteerLeadRecordCreator(conn, data, reject, resolve);
                 });
             } else if (email && clinicalstudy) {
-                console.log('YOOOOOO in 3rd if, phone is null');
                 conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
@@ -66,8 +49,6 @@ router.post('/', function(req, res, next) {
     function volunteerLeadRecordCreator(conn, data, reject, resolve) {
         conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
             if (err || !ret.success) {
-                //return console.error(err, ret); 
-                //resolve(err.name +' : '+err.fields);
                 reject(err.name + ' : ' + err.fields);
             } else {
                 console.log("Created record id : " + ret.id);
