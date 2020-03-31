@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
 //var credsRouter = require('./routes/verifysfdc');
 var createPLRecRouter = require('./routes/createPLead');
+var phoneCountryCodes = require('./routes/phoneCountryCodes');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 //app.use('/verify',credsRouter);
 app.use('/createlead',createPLRecRouter);
+app.use('/getphone',phoneCountryCodes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
