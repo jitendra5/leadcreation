@@ -22,6 +22,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', indexRouter);
+//app.use('/users', usersRouter);
+//app.use('/verify',credsRouter);
+app.use('/createlead',createPLRecRouter);
+app.use('/getphone',phoneCountryCodes);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -42,12 +48,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.use('/', indexRouter);
-//app.use('/users', usersRouter);
-//app.use('/verify',credsRouter);
-app.use('/createlead',createPLRecRouter);
-app.use('/getphone',phoneCountryCodes);
-
 
 module.exports = app;
