@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
 //var credsRouter = require('./routes/verifysfdc');
 var createPLRecRouter = require('./routes/createPLead');
+var createLRecRouter = require('./routes/createLead');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 //app.use('/verify',credsRouter);
 app.use('/createlead',createPLRecRouter);
+app.use('/createbdlead',createLRecRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
