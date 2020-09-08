@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var jsforce = require('jsforce');
 global.language = '';
-router.post('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     console.log('data---');
@@ -100,32 +100,12 @@ router.post('/', function(req, res, next) {
     }
 
     function main() {
-        var con;
-        //var db =dynamodb;
-        let connectSFDC = sfdcConnFn();
-        var totalTables = [];
-        connectSFDC.then((result) => {
-                console.log("#####connected to SFDC " + result.status);
-                console.log('resul--------t');
-                console.log(result);
-                //console.log(result);
-                return insertOPS(result.con);
-            })
-            .then((result) => {
-                //console.log(result);
-                console.log('####insertOps called: ');
-                //res.status(200).end();
-                res.send(JSON.stringify({ 'Status': result, 'Response': '200' }));
-            })
-            .catch((error) => {
-                console.log(error);
-                res.send(JSON.stringify({ 'Status': error, 'Response': '400' }));
-                //res.status(404).end();
-            });
+        
+                res.send('success');
+            
     };
     //starting the Event loop execution.
     main();
 });
 
 module.exports = router;
-
