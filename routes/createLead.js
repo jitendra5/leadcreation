@@ -2,52 +2,53 @@ var express = require('express');
 var router = express.Router();
 var jsforce = require('jsforce');
 global.language = '';
-router.get('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     console.log('data---');
     console.log(req.body);
     console.log('conn');
-    let insertOPS = function insertLead(conn) {
+    let insertOPS = function insertBDLead(conn) {
         console.log('Inserting BD Lead now.!!!');
         return new Promise(function(resolve, reject) {
             // Single record creation
             let data = req.body;
             language = data['Language__c'];
-            email = data['Email__c'];
-            clinicalstudy = data['Clinical_Study__c'];
-            phone = data['Phone__c'];
-            //Check for email, phone, and clinical study volunteer lead records, If already exists throw error message
-            if (email && phone && clinicalstudy) {
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
+            email = data['Email'];
+            phone = data['Phone'];
+            data['RecordTypeId'] = '01254000000K9ggAAC';
+            //Check for email, and phone bd lead records, If already exists throw error message
+            if (email && phone) {
+                conn.query("SELECT Email FROM Lead where (Email ='" + email + "' OR Phone = '" + phone + "')", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
                     else
-                        volunteerLeadRecordCreator(conn, data, reject, resolve);
+                        BDLeadRecordCreator(conn, data, reject, resolve);
                 });
 
-            } else if (email && phone) {
-                //Check for email and phone volunteer lead records with clinical study as null, If already exists throw error message
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='' AND (Email__c ='" + email + "' OR Phone__c = '" + phone + "')", function(err, result) {
+            } else if (email) {
+                //Check for email bd lead records, If already exists throw error message
+                conn.query("SELECT Email FROM Lead where Email ='" + email + "'", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
                     else
-                        volunteerLeadRecordCreator(conn, data, reject, resolve);
+                        BDLeadRecordCreator(conn, data, reject, resolve);
                 });
-            } else if (email && clinicalstudy) {
-                conn.query("SELECT Email__c FROM Volunteer_Lead__c where Clinical_Study__c ='" + clinicalstudy + "' AND Email__c ='" + email + "'", function(err, result) {
+            } else if (phone) {
+                //Check for phone bd lead records, If already exists throw error message
+                conn.query("SELECT Phone FROM Lead where Phone ='" + phone + "'", function(err, result) {
                     if (result.totalSize >= 1)
                         reject('You have already subscribed');
                     else
-                        volunteerLeadRecordCreator(conn, data, reject, resolve);
+                        BDLeadRecordCreator(conn, data, reject, resolve);
                 });
             } else
-                volunteerLeadRecordCreator(conn, data, reject, resolve);
+                BDLeadRecordCreator(conn, data, reject, resolve);
         })
     }
 
-    function volunteerLeadRecordCreator(conn, data, reject, resolve) {
-        conn.sobject("Volunteer_Lead__c").create(data, function(err, ret) {
+    function BDLeadRecordCreator(conn, data, reject, resolve) {
+        conn.sobject("Lead").create(data, function(err, ret) {
             if (err || !ret.success) {
                 reject(err.name + ' : ' + err.fields);
             } else {
@@ -100,9 +101,28 @@ router.get('/', function(req, res, next) {
     }
 
     function main() {
-        
-                res.send('success');
-            
+        var con;
+        //var db =dynamodb;
+        let connectSFDC = sfdcConnFn();
+        var totalTables = [];
+        connectSFDC.then((result) => {
+                console.log("#####connected to SFDC " + result.status);
+                console.log('resul--------t');
+                console.log(result);
+                //console.log(result);
+                return insertOPS(result.con);
+            })
+            .then((result) => {
+                //console.log(result);
+                console.log('####insertOps called: ');
+                //res.status(200).end();
+                res.send(JSON.stringify({ 'Status': result, 'Response': '200' }));
+            })
+            .catch((error) => {
+                console.log(error);
+                res.send(JSON.stringify({ 'Status': error, 'Response': '400' }));
+                //res.status(404).end();
+            });
     };
     //starting the Event loop execution.
     main();
