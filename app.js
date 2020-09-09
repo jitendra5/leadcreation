@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 //app.use('/verify',credsRouter);
-app.use('/createlead',createPLRecRouter);
+//app.use('/createlead',createPLRecRouter);
 app.use('/createbdlead',createLRecRouter);
 
 // catch 404 and forward to error handler
