@@ -14,37 +14,10 @@ router.post('/', function(req, res, next) {
         return new Promise(function(resolve, reject) {
             // Single record creation
             let data = req.body;
-            language = data['Language__c'];
-            email = data['Email'];
-            phone = data['Phone'];
+            language = data['Language__c'];           
             data['RecordTypeId'] = '01254000000K9ggAAC';
-            //Check for email, and phone bd lead records, If already exists throw error message
-            if (email && phone) {
-                conn.query("SELECT Email FROM Lead where (Email ='" + email + "' OR Phone = '" + phone + "')", function(err, result) {
-                    if (result.totalSize >= 1)
-                        reject('You have already subscribed');
-                    else
-                        BDLeadRecordCreator(conn, data, reject, resolve);
-                });
-
-            } else if (email) {
-                //Check for email bd lead records, If already exists throw error message
-                conn.query("SELECT Email FROM Lead where Email ='" + email + "'", function(err, result) {
-                    if (result.totalSize >= 1)
-                        reject('You have already subscribed');
-                    else
-                        BDLeadRecordCreator(conn, data, reject, resolve);
-                });
-            } else if (phone) {
-                //Check for phone bd lead records, If already exists throw error message
-                conn.query("SELECT Phone FROM Lead where Phone ='" + phone + "'", function(err, result) {
-                    if (result.totalSize >= 1)
-                        reject('You have already subscribed');
-                    else
-                        BDLeadRecordCreator(conn, data, reject, resolve);
-                });
-            } else
-                BDLeadRecordCreator(conn, data, reject, resolve);
+            
+            BDLeadRecordCreator(conn, data, reject, resolve);
         })
     }
 
